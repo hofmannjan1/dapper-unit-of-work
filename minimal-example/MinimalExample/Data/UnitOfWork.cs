@@ -3,12 +3,12 @@ using System.Data.Common;
 namespace DapperUnitOfWork.MinimalExample.Data;
 
 public interface IUnitOfWork : IDisposable
-{
-    DbContext Context { get; }
-    bool IsDisposed { get; }
-    Task BeginAsync();
-    Task RollbackAsync();
-    Task CommitAsync();
+{ 
+  DbContext Context { get; }
+  bool IsDisposed { get; }
+  Task BeginAsync();
+  Task RollbackAsync();
+  Task CommitAsync();
 }
 
 public class UnitOfWork : IUnitOfWork
@@ -18,7 +18,7 @@ public class UnitOfWork : IUnitOfWork
 
   public UnitOfWork(DbConnection connection) => Context = new DbContext(connection, true);
 
-  public async Task BeginAsync() =>
+  public async Task BeginAsync() => 
     Context.Transaction = await Context.Connection.BeginTransactionAsync();
 
   public Task RollbackAsync() => Context.Transaction!.RollbackAsync();

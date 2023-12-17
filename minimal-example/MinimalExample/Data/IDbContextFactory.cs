@@ -1,7 +1,7 @@
 namespace DapperUnitOfWork.MinimalExample.Data;
 
 public interface IDbContextFactory
-{
-    IDbContext CreateContext();
-    IUnitOfWork CreateUnitOfWork();
+{ 
+  IDbContext CreateContext();
+  IUnitOfWork CreateUnitOfWork();
 }

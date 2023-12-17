@@ -2,15 +2,15 @@ using System.Data.Common;
 
 namespace DapperUnitOfWork.MinimalExample.Data;
 
-public interface IDbContext : IDisposable
+public interface IDbContext : IAsyncDisposable
 {
-    public DbConnection Connection { get; }
-    public DbTransaction? Transaction { get; set; }
-    bool IsDisposed { get; set; }
+  public DbConnection Connection { get; }
+  public DbTransaction? Transaction { get; set; }
+  bool IsDisposed { get; set; }
 }
 
 public class DbContext : IDbContext
-{
+{ 
   public DbConnection Connection { get; }
   public DbTransaction? Transaction { get; set; }
   public bool IsDisposed { get; set; }
@@ -25,13 +25,15 @@ public class DbContext : IDbContext
     _isUnitOfWorkContext = isUnitOfWorkContext;
   }
 
-  public void Dispose()
+  public async ValueTask DisposeAsync()
   {
     if (_isUnitOfWorkContext)
       return;
+    
+    await Connection.DisposeAsync();
+    if (Transaction is not null) 
+      await Transaction.DisposeAsync();
 
-    Transaction?.Dispose();
-    Connection?.Dispose();
     IsDisposed = true;
   }
 }
