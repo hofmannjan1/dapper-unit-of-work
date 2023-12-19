@@ -13,12 +13,12 @@ public class Worker : IHostedService
   {
     await using var scope = _serviceProvider.CreateAsyncScope();
 
-    await SeedDatabase(scope);
+    await SeedDatabaseAsync(scope);
   }
 
   public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
-  private async Task SeedDatabase(AsyncServiceScope scope)
+  private async Task SeedDatabaseAsync(AsyncServiceScope scope)
   {
     var contextFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory>();
     

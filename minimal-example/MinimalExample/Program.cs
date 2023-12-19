@@ -31,7 +31,7 @@ app.MapGet("/accounts/{accountId:guid}/balance", (Guid accountId, CancellationTo
 app.MapPost("/accounts/transfer", async (TransferBalanceRequest request, CancellationToken cancellationToken, 
   IDbContextFactory contextFactory, IAccountRepository accountRepository) =>
   {
-    using var unitOfWork = contextFactory.CreateUnitOfWork();
+    await using var unitOfWork = contextFactory.CreateUnitOfWork();
 
     try
     {

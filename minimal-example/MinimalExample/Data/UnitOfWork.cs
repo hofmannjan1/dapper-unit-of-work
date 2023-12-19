@@ -2,7 +2,7 @@ using System.Data.Common;
 
 namespace DapperUnitOfWork.MinimalExample.Data;
 
-public interface IUnitOfWork : IDisposable
+public interface IUnitOfWork : IAsyncDisposable
 { 
   DbContext Context { get; }
   bool IsDisposed { get; }
@@ -25,10 +25,12 @@ public class UnitOfWork : IUnitOfWork
 
   public Task CommitAsync() => Context.Transaction!.CommitAsync();
 
-  public void Dispose()
+  public async ValueTask DisposeAsync()
   {
-    Context.Connection?.Dispose();
-    Context.Transaction?.Dispose();
-    Context.IsDisposed = true;
+    await Context.Connection.DisposeAsync();
+        if (Context.Transaction is not null) 
+          await Context.Transaction.DisposeAsync();
+    
+        Context.IsDisposed = true;
   }
 }
