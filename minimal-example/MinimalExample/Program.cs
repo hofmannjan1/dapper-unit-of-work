@@ -12,7 +12,10 @@ builder.Services.AddQuartz();
 builder.Services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
 builder.Services.AddHostedService<Worker>();
 
-builder.Services.AddScoped<IDbContextFactory, SqliteContextFactory>();
+// Uncomment the desired database provider.
+// builder.Services.AddScoped<IDbContextFactory, SqliteContextFactory>();
+builder.Services.AddScoped<IDbContextFactory, SqlServerContextFactory>();
+
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 var app = builder.Build();
